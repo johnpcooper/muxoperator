@@ -1,8 +1,4 @@
 import sys
-
-# below should only need to be done one time as long as you're in the
-# root environment of your machine. 
-
 sys.path.append('C:\Users\John Cooper\AppData\Local\Elveflow SDK V3_01_11\python_64\DLL64') #add the path of the library here
 sys.path.append('C:\Users\John Cooper\AppData\Local\Elveflow SDK V3_01_11\python_64')#add the path of the LoadElveflow.py
 
