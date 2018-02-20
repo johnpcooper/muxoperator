@@ -1,5 +1,5 @@
 # muxoperator
-This is a package to operate the Elveflow Mux Wire solenoid valve driver. 
+This is a package to operate the Elveflow Mux Wire solenoid valve driver. The solenoid has two states, on or off, which control whether power is being supplied to the solenoid valve. When on, constant pressure is supplied through the valve to the microfluidic chip output. When off, the microfluidic chip is exposed to atmospheric pressure. This package enables the creation of simple scripts using two functions, switch_valve() turns valves on and off and pulse_valve() which allows a pressure pulse with specified delay and duration for applications like pneumatic pumping.
 
 Aside from some common Python modules (ctypes, array, threading), this package requires Elveflow64, a package written by Elveflow 
 for operating their devices using Python. This package downloads with an installation of Elveflow's SDK. Follow the instructions of 
