@@ -1,7 +1,3 @@
-import sys
-sys.path.append('C:\Users\John Cooper\AppData\Local\Elveflow SDK V3_01_11\python_64\DLL64') #add the path of the library here
-sys.path.append('C:\Users\John Cooper\AppData\Local\Elveflow SDK V3_01_11\python_64')#add the path of the LoadElveflow.py
-
 from ctypes import *
 from array import array
 from Elveflow64 import *
@@ -66,33 +62,42 @@ class Valve_Operator(object):
             def off():
                 self.switch_valve('off')
             
-            self.t1 = Timer(interval, off)
-            
+            self.t1 = Timer(interval, off)            
             # Ultimate action of the pulse() function:
             on()            # switch the valve on as soon as pulse() is called
-            self.t1.start() # switch the valve off after interval seconds
-        
-        
+            self.t1.start() # switch the valve off after interval seconds       
+             
+        # create and run a t2 Timer object called with pulse(). pulse()
+        # is called after delay seconds, valve switches on, and after
+        # interval the valve switches off
         self.t2 = Timer(delay, pulse)
-        self.t2.start()      
-            
-indices = [15, 11, 7, 3, 14, 10, 6, 2, 13, 9, 5, 1, 12, 8, 4, 0];
-valve_numbers = range(1, 17);
-number_dict = dict(zip(valve_numbers, indices))
+        self.t2.start() 
+        
+class Device_Initiator(object):
+    
+    """Instantiate all valves using Valve_Operator and return a dictionary called valve_dict that is
+       used to call individual valves with their sequential index. Call this class with the instrument ID. 
+       For mux wire used by JPC, this ID is 51194"""
 
-# Define a function that allows you to define an instance of Valve_Operator() 
-# using the valve number and not the convoluted index
-def translate(instrID, valve_number):
-    x = Valve_Operator(instrID, number_dict[valve_number])
-    return x
+    def __init__(self, ID):
+        self.ID = ID
+                
+        indices = [15, 11, 7, 3, 14, 10, 6, 2, 13, 9, 5, 1, 12, 8, 4, 0]
+        valve_numbers = range(1, 17)
+        number_dict = dict(zip(valve_numbers, indices))
 
-# create a list of Valve_Operator() instances that are instantiated for
-# each valve using the translate() function above.
-instances = []
-for valve in range(1, 17):
-    instances.append(translate(51194, valve))
+        # Define a function that allows you to define an instance of Valve_Operator() 
+        # using the valve number and not the convoluted index
+        def translate(valve_number):
+            x = Valve_Operator(self.ID, number_dict[valve_number])
+            return x    
 
-# Create an instance_dict which allows you to call an instance
-# of a valve from the dictionary with its number as the key
-instance_dict = dict(zip(valve_numbers, instances))
+        # create a list of Valve_Operator() instances that are instantiated for
+        # each valve using the translate() function above.
+        instances = []
+        for valve in range(1, 17):
+            instances.append(translate(valve))
 
+        # Create an instance_dict which allows you to call an instance
+        # of a valve from the dictionary with its number as the key
+        self.valve_dict = dict(zip(valve_numbers, instances))
