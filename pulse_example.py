@@ -1,7 +1,8 @@
-import sys
-sys.path.append('C:\Users\John Cooper\Projects\mux_wire\mux_wire') # Add the location of the muxoperator.py file to path
-import muxoperator # Import muxoperator
+import muxoperator as mo
 
-v1 = muxoperator.instance_dict[1] # set v1 = to an instance of Valve_Operator() that refers to valve 1 on the mux wire
+device = mo.Device_Inititiator(51194) # Instantiate the device using the name you gave it in NI Max
+valves = device.valve_dict # Let 'valves' refer to the valve_dict attribute of the device
 
-v1.pulse_valve(1,1) # Pulse valve 1 with a delay of 1 second and a duration (interval) of 1 second
+valves[0].pulse_valve(2, 5) # Pulse the first valve on the mux wire on for 5 seconds after a 2 second delay.
+valves[3].switch_valve('on') # Switch the fourth valve on
+valves[3].switch_valve('off') # Switch the fourth valve off
